@@ -5,9 +5,11 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report a problem. Please check the README's
-        *Troubleshooting and FAQ* section and the existing issues first.
-        For security problems, use private reporting instead (see SECURITY.md).
+        Thanks for taking the time to report a problem. Please check the
+        [troubleshooting guide](https://github.com/m7ghareeb/window-swipe/blob/main/docs/troubleshooting.md)
+        and the existing issues first. For questions, use
+        [Discussions](https://github.com/m7ghareeb/window-swipe/discussions) instead.
+        For security problems, use private reporting (see SECURITY.md).
   - type: textarea
     id: what-happened
     attributes:

@@ -45,7 +45,9 @@ index at <https://cinnamon-spices.linuxmint.com/json/extensions.json>.
 3. **Prepare the release in a pull request:**
    - Raise `version` in `window-swipe@ghareeb/metadata.json` following SemVer: 1.0.1 for fixes,
      1.1.0 for compatible features, 2.0.0 for breaking changes.
-   - Add a `## [x.y.z] - date` section at the top of `CHANGELOG.md`; CI checks that the two match.
+   - In `CHANGELOG.md`, turn `## [Unreleased]` into `## [x.y.z] - date`, start a new empty
+     `## [Unreleased]` above it, and update the comparison links at the bottom. CI checks that
+     the newest version there matches `metadata.json`.
    - Add release notes as `docs/releases/vx.y.z.md`.
 4. **Tag and publish the GitHub Release** from the merged commit on `main`:
    ```sh

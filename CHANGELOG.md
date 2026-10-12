@@ -7,6 +7,14 @@ All notable changes to Window Swipe are documented here. Window Swipe follows
 - **MINOR** (1.1.0): new features that keep existing settings working.
 - **MAJOR** (2.0.0): changes that are not backwards compatible.
 
+## [Unreleased]
+
+### Documentation
+- New installation, configuration, troubleshooting and developer guides in `docs/`, and a
+  reorganised README with a quick start, gesture setup and links to GitHub Discussions.
+- Corrected the gesture setup: Cinnamon's default gestures already assign actions to the
+  horizontal three- and four-finger swipes, so usually only *Enable gestures* needs turning on.
+
 ## [1.0.0] - 2026-10-12
 
 First public release.
@@ -41,4 +49,5 @@ Before this release, Window Swipe went through private development builds with i
 (0.8 to 1.2.0). Those builds were never published, and their numbers are unrelated to public
 releases. 1.0.0 is the first public version.
 
+[Unreleased]: https://github.com/m7ghareeb/window-swipe/compare/v1.0.0...main
 [1.0.0]: https://github.com/m7ghareeb/window-swipe/releases/tag/v1.0.0
