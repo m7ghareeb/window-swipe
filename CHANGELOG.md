@@ -14,6 +14,8 @@ All notable changes to Window Swipe are documented here. Window Swipe follows
   reorganised README with a quick start, gesture setup and links to GitHub Discussions.
 - Corrected the gesture setup: Cinnamon's default gestures already assign actions to the
   horizontal three- and four-finger swipes, so usually only *Enable gestures* needs turning on.
+- New README illustration (demo GIF and still), rendered offline from the extension's own
+  release logic by `tools/media/render_demo.py`, with an original wallpaper.
 - v1.0.0 release notes: install commands now create the extensions folder first and verify
   the checksum; gesture setup, assets and documentation links updated.
 
