@@ -14,7 +14,9 @@
   <img src="https://img.shields.io/badge/Cinnamon-6.6-8fbc5c" alt="Cinnamon 6.6">
 </p>
 
-<p align="center"><img src="docs/images/demo.gif" width="720" alt="A window sliding out while the next one slides in, following a touchpad swipe"></p>
+<p align="center"><img src="docs/images/demo.gif" width="720" alt="Illustration: three demo windows; a three-finger swipe slides the text editor out and the terminal in, a short swipe springs back, a quick flick switches to the photos window, and swipes to the right go back"></p>
+<p align="center"><sub><i>Illustration, not a screen recording: rendered with Window Swipe's own release logic
+(Calm animation, Balanced sensitivity) on a demo scene.</i></sub></p>
 
 Window Swipe brings a macOS-inspired way of moving between windows to Linux Mint and the
 Cinnamon desktop. Swipe sideways with three or four fingers: the current window slides away
@@ -46,7 +48,7 @@ smoothly from where the last one is.
 - **Leaves everything else alone.** Your real windows never move during a slide, other gestures
   keep their actions, and disabling Window Swipe restores Cinnamon's normal behaviour.
 
-<p align="center"><img src="docs/images/slide.png" width="720" alt="Two windows halfway through a slide"></p>
+<p align="center"><img src="docs/images/slide.png" width="720" alt="Illustration: a text editor and a terminal halfway through a slide, with three fingers on the touchpad"></p>
 
 ## Requirements
 

@@ -101,6 +101,7 @@ request, and watch the log for errors while you test.
 | `tools/build-release.sh [revision]` | Builds the release zip and `SHA256SUMS` into `dist/v<version>/` from a committed revision (default `HEAD`). The same revision always gives a byte-identical zip |
 | `tools/build-spices.sh [revision] [validate-spice]` | Assembles the Cinnamon Spices folder in `dist/spices/`, and runs the official validator if you give its path |
 | `python3 tools/make_icon.py` | Redraws `icon.png` |
+| `python3 tools/media/render_demo.py <dir>` | Renders the README illustration (`demo.gif`, `slide.png`) offline from the extension's release logic; needs `python3-pil` and the Noto Sans and DejaVu fonts |
 
 The build scripts read from Git, not from your working files, so commit your changes before
 building.
