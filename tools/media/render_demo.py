@@ -74,7 +74,7 @@ def dock(img, active):
     """A centred, Plank-style dock; the dot marks the app whose window is shown."""
     n, gap = 52, 14
     dw = len(DOCK) * n + (len(DOCK) + 1) * gap; dh = n + 22
-    x0, y0 = (W - dw) // 2, H - dh - 10
+    x0, y0 = (W - dw) // 2, H - DOCK_H + (DOCK_H - dh) // 2
     glass = Image.new('RGBA', (dw, dh), (0, 0, 0, 0))
     ImageDraw.Draw(glass).rounded_rectangle([0, 0, dw - 1, dh - 1], 20, fill=(255, 255, 255, 40), outline=(255, 255, 255, 70), width=1)
     img.alpha_composite(glass, (x0, y0))
@@ -93,7 +93,7 @@ def window(w, h, title, kind):
     dark = kind == 'terminal'
     body = (30, 32, 40) if dark else (250, 250, 252)
     head = (42, 44, 54) if dark else (236, 237, 241)
-    r = 14 * S
+    r = 0                             # maximized: square corners
     d.rounded_rectangle([0, 0, w * S - 1, h * S - 1], r, fill=body, outline=(14, 16, 22) if dark else (200, 204, 212), width=S)
     d.rounded_rectangle([0, 0, w * S - 1, 46 * S], r, fill=head)
     d.rectangle([0, 30 * S, w * S - 1, 46 * S], fill=head)
@@ -177,7 +177,8 @@ def window(w, h, title, kind):
             m = Image.new('L', (tw, th), 0); ImageDraw.Draw(m).rounded_rectangle([0, 0, tw - 1, th - 1], 10 * S, fill=255)
             win.paste(tile, (x0, y0), m)
     win = win.resize((w, h), Image.LANCZOS)
-    # soft shadow
+    return win, 0
+    # (floating-window shadow, unused for maximized windows)
     pad = 40
     out = Image.new('RGBA', (w + 2 * pad, h + 2 * pad), (0, 0, 0, 0))
     sh = Image.new('RGBA', out.size, (0, 0, 0, 0))
@@ -187,8 +188,9 @@ def window(w, h, title, kind):
     return out, pad
 
 WIN = [('Notes — Text Editor', 'editor'), ('Terminal', 'terminal'), ('Photos', 'gallery')]
-WW, WH = 1320, 664
-WX, WY = (W - WW) // 2, 100
+DOCK_H = 94                         # space kept free for the dock (like Plank's reserved strip)
+WW, WH = W, H - DOCK_H              # maximized windows fill the work area
+WX, WY = 0, 0
 
 # ---------------------------------------------------------------- motion (extension logic)
 class Slide:
@@ -288,33 +290,33 @@ def simulate():
 
 # ---------------------------------------------------------------- drawing
 def touchpad(img, finger):
-    pw, ph = 170, 100
-    x0, y0 = W - pw - 28, H - ph - 14
+    pw, ph = 140, 80
+    x0, y0 = W - pw - 24, H - DOCK_H + (DOCK_H - ph) // 2
     pad = Image.new('RGBA', (pw, ph), (0, 0, 0, 0))
     d = ImageDraw.Draw(pad)
     d.rounded_rectangle([0, 0, pw - 1, ph - 1], 18, fill=(14, 16, 26, 215), outline=(255, 255, 255, 120), width=2)
     lab = 'touchpad'
-    lf = f_reg(15)
-    d.text(((pw - d.textlength(lab, font=lf)) / 2, ph - 24), lab, font=lf, fill=(255, 255, 255, 90))
+    lf = f_reg(13)
+    d.text(((pw - d.textlength(lab, font=lf)) / 2, ph - 20), lab, font=lf, fill=(255, 255, 255, 90))
     if finger:
         prog, alpha, _ = finger
         cx = pw / 2 - prog * pw * 0.5
         for i in (-1, 0, 1):
-            fx, fy = cx + i * 22, ph / 2 + (8 if i == 0 else 0) - 4
+            fx, fy = cx + i * 18, ph / 2 + (6 if i == 0 else 0) - 8
             a = int(235 * max(0, min(1, alpha)))
-            d.ellipse([fx - 9, fy - 9, fx + 9, fy + 9], fill=(255, 255, 255, a))
+            d.ellipse([fx - 8, fy - 8, fx + 8, fy + 8], fill=(255, 255, 255, a))
     img.alpha_composite(pad, (x0, y0))
 
 def caption(img, text):
     if not text: return
-    d = ImageDraw.Draw(img); f = f_bold(26)
+    d = ImageDraw.Draw(img); f = f_bold(21)
     tw = d.textlength(text, font=f)
-    pw, ph = int(tw + 56), 54
-    x0, y0 = (W - pw) // 2, 26
+    pw, ph = int(tw + 44), 46
+    x0, y0 = 24, H - DOCK_H + (DOCK_H - ph) // 2
     chip = Image.new('RGBA', (pw, ph), (0, 0, 0, 0))
-    ImageDraw.Draw(chip).rounded_rectangle([0, 0, pw - 1, ph - 1], 27, fill=(12, 14, 24, 170))
+    ImageDraw.Draw(chip).rounded_rectangle([0, 0, pw - 1, ph - 1], 23, fill=(12, 14, 24, 190))
     img.alpha_composite(chip, (x0, y0))
-    d.text((x0 + 28, y0 + 10), text, font=f, fill=(245, 247, 252))
+    d.text((x0 + 22, y0 + 9), text, font=f, fill=(245, 247, 252))
 
 def render(bg, wins, pos, finger, cap, show_cap=True, show_pad=True):
     img = bg.copy()
@@ -335,7 +337,7 @@ def main():
     frames = simulate()
     print('frames', len(frames), 'seconds', round(len(frames) / FPS, 1))
     # still: mid-slide between the editor and the terminal, at full resolution
-    still = render(bg, wins, 0.42, (0.42, 1.0, 'left'), '', show_cap=False)
+    still = render(bg, wins, 0.34, (0.34, 1.0, 'left'), '', show_cap=False)
     still.convert('RGB').save(os.path.join(OUT, 'slide.png'), optimize=True)
     # GIF: shared palette, no dithering (flat UI) -> small and stable between frames
     gh = round(H * GIF_W / W)
