@@ -48,7 +48,7 @@ smoothly from where the last one is.
 - **Leaves everything else alone.** Your real windows never move during a slide, other gestures
   keep their actions, and disabling Window Swipe restores Cinnamon's normal behaviour.
 
-<p align="center"><img src="docs/images/slide.png" width="720" alt="Illustration: a text editor and a terminal halfway through a slide, with three fingers on the touchpad"></p>
+<p align="center"><img src="docs/images/slide.png" width="720" alt="Illustration: a text editor and a terminal halfway through a slide, with the dock below and three fingers on the touchpad"></p>
 
 ## Requirements
 

@@ -32,20 +32,59 @@ def wallpaper(grain=True):
                    stdout=subprocess.DEVNULL)
     return Image.open(p).convert('RGBA')
 
-def panel(img):
-    # a slim, generic bottom panel (no real app icons)
+def app_icon(kind, n):
+    """Simple, generic app icons drawn here (no third-party artwork)."""
+    S = 4; N = n * S
+    im = Image.new('RGBA', (N, N), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    r = int(N * 0.22)
+    if kind == 'editor':
+        d.rounded_rectangle([0, 0, N - 1, N - 1], r, fill=(84, 140, 230))
+        d.rounded_rectangle([N * .24, N * .16, N * .76, N * .84], N * .06, fill=(250, 250, 252))
+        for i in range(4):
+            y = N * (.32 + i * .12); d.rectangle([N * .32, y, N * (.68 if i < 3 else .52), y + N * .05], fill=(150, 170, 210))
+    elif kind == 'terminal':
+        d.rounded_rectangle([0, 0, N - 1, N - 1], r, fill=(38, 40, 50))
+        d.line([(N * .26, N * .34), (N * .42, N * .5), (N * .26, N * .66)], fill=(110, 200, 120), width=int(N * .07), joint='curve')
+        d.rectangle([N * .48, N * .62, N * .74, N * .69], fill=(220, 224, 232))
+    elif kind == 'gallery':
+        for y in range(N):
+            t = y / N; d.line([(0, y), (N, y)], fill=(round(255 - 30 * t), round(160 - 60 * t), round(98 + 40 * t)))
+        m = Image.new('L', (N, N), 0); ImageDraw.Draw(m).rounded_rectangle([0, 0, N - 1, N - 1], r, fill=255)
+        d.ellipse([N * .58, N * .2, N * .78, N * .4], fill=(255, 240, 210))
+        d.polygon([(0, N), (N * .38, N * .5), (N * .62, N * .74), (N * .8, N * .58), (N, N)], fill=(40, 36, 70))
+        im.putalpha(m)
+    elif kind == 'files':
+        d.rounded_rectangle([0, 0, N - 1, N - 1], r, fill=(232, 168, 60))
+        d.rounded_rectangle([N * .2, N * .3, N * .8, N * .74], N * .05, fill=(255, 214, 130))
+        d.rounded_rectangle([N * .2, N * .24, N * .46, N * .36], N * .04, fill=(255, 214, 130))
+    elif kind == 'settings':
+        d.rounded_rectangle([0, 0, N - 1, N - 1], r, fill=(120, 126, 140))
+        c = N / 2
+        for k in range(8):
+            ang = k * math.pi / 4
+            d.line([(c, c), (c + math.cos(ang) * N * .3, c + math.sin(ang) * N * .3)], fill=(235, 238, 244), width=int(N * .12))
+        d.ellipse([c - N * .22, c - N * .22, c + N * .22, c + N * .22], fill=(235, 238, 244))
+        d.ellipse([c - N * .09, c - N * .09, c + N * .09, c + N * .09], fill=(120, 126, 140))
+    return im.resize((n, n), Image.LANCZOS)
+
+DOCK = ['files', 'editor', 'terminal', 'gallery', 'settings']
+ICONS = {}
+
+def dock(img, active):
+    """A centred, Plank-style dock; the dot marks the app whose window is shown."""
+    n, gap = 52, 14
+    dw = len(DOCK) * n + (len(DOCK) + 1) * gap; dh = n + 22
+    x0, y0 = (W - dw) // 2, H - dh - 10
+    glass = Image.new('RGBA', (dw, dh), (0, 0, 0, 0))
+    ImageDraw.Draw(glass).rounded_rectangle([0, 0, dw - 1, dh - 1], 20, fill=(255, 255, 255, 40), outline=(255, 255, 255, 70), width=1)
+    img.alpha_composite(glass, (x0, y0))
     d = ImageDraw.Draw(img)
-    ph = 40
-    bar = Image.new('RGBA', (W, ph), (16, 18, 28, 215))
-    img.alpha_composite(bar, (0, H - ph))
-    cy = H - ph // 2
-    d.rounded_rectangle([14, cy - 12, 38, cy + 12], 6, fill=(98, 160, 90, 255))       # menu button
-    for i, c in enumerate([(84, 140, 230), (232, 168, 60), (70, 70, 80), (180, 110, 220)]):
-        x = 60 + i * 40
-        d.rounded_rectangle([x, cy - 12, x + 24, cy + 12], 6, fill=c + (255,))
-    t = '10:24'
-    d.text((W - 20 - d.textlength(t, font=f_reg(17)), cy - 12), t, font=f_reg(17), fill=(220, 224, 232))
-    return img
+    for i, k in enumerate(DOCK):
+        if k not in ICONS: ICONS[k] = app_icon(k, n)
+        x = x0 + gap + i * (n + gap)
+        img.alpha_composite(ICONS[k], (x, y0 + 8))
+        if k == active:
+            d.ellipse([x + n / 2 - 3, y0 + dh - 9, x + n / 2 + 3, y0 + dh - 3], fill=(255, 255, 255, 230))
 
 def window(w, h, title, kind):
     S = 2                                     # supersample for clean corners and text
@@ -54,25 +93,29 @@ def window(w, h, title, kind):
     dark = kind == 'terminal'
     body = (30, 32, 40) if dark else (250, 250, 252)
     head = (42, 44, 54) if dark else (236, 237, 241)
-    r = 12 * S
-    d.rounded_rectangle([0, 0, w * S - 1, h * S - 1], r, fill=body)
+    r = 14 * S
+    d.rounded_rectangle([0, 0, w * S - 1, h * S - 1], r, fill=body, outline=(14, 16, 22) if dark else (200, 204, 212), width=S)
     d.rounded_rectangle([0, 0, w * S - 1, 46 * S], r, fill=head)
     d.rectangle([0, 30 * S, w * S - 1, 46 * S], fill=head)
     d.line([0, 46 * S, w * S, 46 * S], fill=(20, 22, 28) if dark else (214, 216, 222), width=S)
     tf = f_bold(15 * S)
     tc = (210, 214, 224) if dark else (60, 64, 74)
-    d.text(((w * S - d.textlength(title, font=tf)) / 2, 12 * S), title, font=tf, fill=tc)
+    tx = (w * S - d.textlength(title, font=tf)) / 2
+    d.text((tx, 12 * S), title, font=tf, fill=tc)
+    ic = app_icon(kind, 20 * S)
+    win.alpha_composite(ic, (int(tx - 30 * S), 13 * S))
     for i, c in enumerate([(120, 124, 136), (120, 124, 136), (232, 96, 84)]):   # min / max / close
         cx = w * S - (26 + (2 - i) * 26) * S
         d.ellipse([cx - 7 * S, 23 * S - 7 * S, cx + 7 * S, 23 * S + 7 * S], fill=c)
     top = 46 * S
     if kind == 'editor':
-        # toolbar
-        d.rectangle([0, top, w * S, top + 44 * S], fill=(244, 245, 248))
-        for i in range(9):
-            x = 22 * S + i * 44 * S
-            d.rounded_rectangle([x, top + 12 * S, x + 22 * S, top + 32 * S], 5 * S, fill=(206, 210, 220))
-        d.line([0, top + 44 * S, w * S, top + 44 * S], fill=(222, 224, 230), width=S)
+        # tab strip with one open document
+        d.rectangle([0, top, w * S, top + 44 * S], fill=(242, 243, 247))
+        d.rounded_rectangle([16 * S, top + 8 * S, 210 * S, top + 44 * S + 8 * S], 8 * S, fill=(250, 250, 252), outline=(214, 216, 222), width=S)
+        d.rectangle([16 * S + S, top + 40 * S, 210 * S - S, top + 46 * S], fill=(250, 250, 252))
+        d.text((34 * S, top + 15 * S), 'welcome.md', font=f_reg(15 * S), fill=(60, 64, 74))
+        d.line([0, top + 44 * S, 16 * S, top + 44 * S], fill=(214, 216, 222), width=S)
+        d.line([210 * S, top + 44 * S, w * S, top + 44 * S], fill=(214, 216, 222), width=S)
         y = top + 74 * S; left = 70 * S; right = w * S - 70 * S
         d.text((left, y), 'Window Swipe', font=f_bold(34 * S), fill=(36, 40, 50)); y += 70 * S
         para = ('Swipe left or right with three or four fingers to slide between the windows of your '
@@ -97,6 +140,10 @@ def window(w, h, title, kind):
                 (None, (220, 224, 232), 'Hello from Window Swipe', ''),
                 ('demo@mint', (110, 200, 120), ':~$ ', 'ls projects'),
                 (None, (120, 170, 240), 'notes   photos   website', ''),
+                ('demo@mint', (110, 200, 120), ':~$ ', 'git log --oneline -3'),
+                (None, (232, 190, 90), 'a1f3c2e  Add swipe animation', ''),
+                (None, (232, 190, 90), '7b9d014  Follow the dock order', ''),
+                (None, (232, 190, 90), '3e52a8b  First demo', ''),
                 ('demo@mint', (110, 200, 120), ':~$ ', '')]
         y = top + 26 * S
         for user, c, a, b in rows:
@@ -123,8 +170,10 @@ def window(w, h, title, kind):
                 t = yy / th
                 td.line([(0, yy), (tw, yy)], fill=tuple(round(a + (b - a) * t) for a, b in zip(c1, c2)))
             # simple "landscape" shapes so the tiles read as photos
-            td.ellipse([tw * 0.62, th * 0.18, tw * 0.80, th * 0.18 + tw * 0.18], fill=(255, 255, 255, 150))
-            td.polygon([(0, th), (tw * 0.35, th * 0.55), (tw * 0.6, th * 0.8), (tw * 0.8, th * 0.6), (tw, th)], fill=(0, 0, 0, 60))
+            td.ellipse([tw * 0.64, th * 0.16, tw * 0.80, th * 0.16 + tw * 0.16], fill=(255, 246, 228))
+            far = tuple(round(v * 0.72) for v in c2)
+            td.polygon([(0, th), (0, th * 0.62), (tw * 0.22, th * 0.48), (tw * 0.5, th * 0.66), (tw * 0.78, th * 0.44), (tw, th * 0.58), (tw, th)], fill=far)
+            td.polygon([(0, th), (tw * 0.3, th * 0.7), (tw * 0.55, th * 0.86), (tw * 0.82, th * 0.66), (tw, th * 0.78), (tw, th)], fill=(34, 30, 56))
             m = Image.new('L', (tw, th), 0); ImageDraw.Draw(m).rounded_rectangle([0, 0, tw - 1, th - 1], 10 * S, fill=255)
             win.paste(tile, (x0, y0), m)
     win = win.resize((w, h), Image.LANCZOS)
@@ -138,8 +187,8 @@ def window(w, h, title, kind):
     return out, pad
 
 WIN = [('Notes — Text Editor', 'editor'), ('Terminal', 'terminal'), ('Photos', 'gallery')]
-WW, WH = 1320, 690
-WX, WY = (W - WW) // 2, 104
+WW, WH = 1320, 664
+WX, WY = (W - WW) // 2, 100
 
 # ---------------------------------------------------------------- motion (extension logic)
 class Slide:
@@ -239,21 +288,21 @@ def simulate():
 
 # ---------------------------------------------------------------- drawing
 def touchpad(img, finger):
-    pw, ph = 200, 118
-    x0, y0 = (W - pw) // 2, H - 40 - ph - 14
+    pw, ph = 170, 100
+    x0, y0 = W - pw - 28, H - ph - 14
     pad = Image.new('RGBA', (pw, ph), (0, 0, 0, 0))
     d = ImageDraw.Draw(pad)
     d.rounded_rectangle([0, 0, pw - 1, ph - 1], 18, fill=(14, 16, 26, 215), outline=(255, 255, 255, 120), width=2)
     lab = 'touchpad'
     lf = f_reg(15)
-    d.text(((pw - d.textlength(lab, font=lf)) / 2, ph - 26), lab, font=lf, fill=(255, 255, 255, 90))
+    d.text(((pw - d.textlength(lab, font=lf)) / 2, ph - 24), lab, font=lf, fill=(255, 255, 255, 90))
     if finger:
         prog, alpha, _ = finger
-        cx = pw / 2 - prog * pw * 0.55
+        cx = pw / 2 - prog * pw * 0.5
         for i in (-1, 0, 1):
-            fx, fy = cx + i * 26, ph / 2 + (8 if i == 0 else 0) - 4
+            fx, fy = cx + i * 22, ph / 2 + (8 if i == 0 else 0) - 4
             a = int(235 * max(0, min(1, alpha)))
-            d.ellipse([fx - 10, fy - 10, fx + 10, fy + 10], fill=(255, 255, 255, a))
+            d.ellipse([fx - 9, fy - 9, fx + 9, fy + 9], fill=(255, 255, 255, a))
     img.alpha_composite(pad, (x0, y0))
 
 def caption(img, text):
@@ -273,7 +322,7 @@ def render(bg, wins, pos, finger, cap, show_cap=True, show_pad=True):
         x = WX + (i - pos) * W
         if -WW - 2 * pad < x < W:
             img.paste(wimg, (int(round(x)) - pad, WY - pad), wimg)   # paste clips negative offsets
-    panel(img)
+    dock(img, [k for _, k in WIN][min(len(WIN) - 1, max(0, round(pos)))] if wins else None)
     if show_pad: touchpad(img, finger)
     if show_cap: caption(img, cap)
     return img
