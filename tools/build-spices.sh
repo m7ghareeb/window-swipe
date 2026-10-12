@@ -13,7 +13,8 @@ cd "$ROOT"
 OUT="$ROOT/dist/spices"
 rm -rf "$OUT"; mkdir -p "$OUT/$UUID/files/$UUID"
 for f in info.json screenshot.png README.md; do git show "$REV:spices/$f" > "$OUT/$UUID/$f"; done
-git show "$REV:CHANGELOG.md" > "$OUT/$UUID/CHANGELOG.md"
+# Spices copy of the changelog: released versions only (drop the GitHub-only [Unreleased] section)
+git show "$REV:CHANGELOG.md" | python3 -c 'import re,sys; c=sys.stdin.read(); c=re.sub(r"## \[Unreleased\]\n.*?(?=## \[\d)", "", c, flags=re.S); sys.stdout.write(re.sub(r"(?m)^\[Unreleased\]:.*\n", "", c))' > "$OUT/$UUID/CHANGELOG.md"
 for f in extension.js metadata.json settings-schema.json icon.png; do git show "$REV:$UUID/$f" > "$OUT/$UUID/files/$UUID/$f"; done
 git show "$REV:LICENSE" > "$OUT/$UUID/files/$UUID/LICENSE"
 find "$OUT" -type d -exec chmod 755 {} +; find "$OUT" -type f -exec chmod 644 {} +

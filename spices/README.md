@@ -4,6 +4,9 @@ Swipe horizontally with three or four fingers on the touchpad to slide between t
 the current workspace. The window follows your fingers, glides into place with momentum when
 you lift them, and rapid swipes continue smoothly from wherever the previous one is.
 
+*The screenshot is an illustration rendered from Window Swipe's own animation logic on a demo
+scene, not a screen capture.*
+
 ## Features
 
 - Smooth, macOS-inspired animation that starts at your fingers' speed, with no jump and no overshoot.
@@ -17,9 +20,11 @@ you lift them, and rapid swipes continue smoothly from wherever the previous one
 ## Requirements
 
 - Cinnamon 6.6 (tested on Linux Mint 22.3, X11) and Touchégg (installed with Linux Mint).
-- In **System Settings → Gestures**: gestures enabled, and **swipe left / swipe right with three
-  and four fingers** must each have an action assigned. Any action will do; Cinnamon only passes
-  on gestures that have one, and Window Swipe takes these swipes over while it is enabled.
+- In **System Settings → Gestures → Settings**, turn on **Enable gestures** (it is off by default).
+- On the **Swipe** tab, **Left** and **Right** with three and four fingers must each have an
+  action, not *Disabled*. Cinnamon's defaults already assign actions to them. Any action will do:
+  Cinnamon only passes on gestures that have one, and Window Swipe takes these swipes over while
+  it is enabled.
 
 ## Settings
 
