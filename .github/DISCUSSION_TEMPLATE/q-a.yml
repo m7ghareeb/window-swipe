@@ -1,0 +1,54 @@
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for asking! The [installation guide](https://github.com/m7ghareeb/window-swipe/blob/main/docs/installation.md)
+        and the [troubleshooting guide](https://github.com/m7ghareeb/window-swipe/blob/main/docs/troubleshooting.md)
+        answer the most common questions, especially the one-time gesture setup.
+        If something is clearly broken, please open a [bug report](https://github.com/m7ghareeb/window-swipe/issues/new?template=bug_report.yml) instead.
+
+        Please don't include personal information such as your name, email address, or file
+        paths and screenshots that show private content.
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      description: What are you trying to do, and what happens instead?
+    validations:
+      required: true
+  - type: input
+    id: distribution
+    attributes:
+      label: Distribution
+      placeholder: "Linux Mint 22.3"
+  - type: input
+    id: cinnamon
+    attributes:
+      label: Cinnamon version
+      description: "Output of `cinnamon --version`"
+      placeholder: "Cinnamon 6.6.9"
+  - type: input
+    id: touchegg
+    attributes:
+      label: Touchégg version
+      description: "Output of `touchegg --version`"
+      placeholder: "Touchégg v2.0.16."
+  - type: input
+    id: window-swipe
+    attributes:
+      label: Window Swipe version
+      description: Shown in System Settings → Extensions.
+      placeholder: "1.0.0"
+  - type: dropdown
+    id: session
+    attributes:
+      label: Session
+      options:
+        - X11 (the default on Linux Mint)
+        - Wayland
+        - Not sure
+  - type: textarea
+    id: details
+    attributes:
+      label: Anything else that might help?
+      description: Your Window Swipe settings, Plank or multi-monitor setup, touchpad model, what you've already tried.
