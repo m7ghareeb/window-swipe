@@ -1,0 +1,63 @@
+# Checks every push to main and every pull request. Read-only: it has no write access to the
+# repository and uses no secrets, so it is safe for pull requests from forks.
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      # official Cinnamon Spices validator, pinned to a reviewed revision
+      VALIDATE_SPICE_REV: 167c4141a6df29d27526d874863bb393145be390
+      VALIDATE_SPICE_SHA256: 0b63b6613294e3db6168184b57e62f6522e81670814b1a9a2ca33b2e23fa45ed
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install tools
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q python3-pil zip
+
+      - name: JavaScript syntax
+        run: node --check window-swipe@ghareeb/extension.js
+
+      - name: Metadata, settings schema and changelog
+        run: python3 tools/check-metadata.py
+
+      - name: Cinnamon Spices folder (official validate-spice)
+        run: |
+          curl -fsSL "https://raw.githubusercontent.com/linuxmint/cinnamon-spices-extensions/${VALIDATE_SPICE_REV}/validate-spice" -o "$RUNNER_TEMP/validate-spice"
+          echo "${VALIDATE_SPICE_SHA256}  $RUNNER_TEMP/validate-spice" | sha256sum -c -
+          tools/build-spices.sh HEAD "$RUNNER_TEMP/validate-spice"
+
+      - name: Reproducible release archive
+        run: |
+          tools/build-release.sh HEAD
+          cp dist/v*/SHA256SUMS "$RUNNER_TEMP/first"
+          tools/build-release.sh HEAD > /dev/null
+          diff "$RUNNER_TEMP/first" dist/v*/SHA256SUMS
+          echo "Two builds are byte-identical."
+
+      - name: Upload release archive and Spices folder
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: window-swipe-build
+          path: dist/
+          retention-days: 14
