@@ -1,0 +1,7 @@
+# Keeps the pinned GitHub Actions up to date. Its pull requests are reviewed and merged by the maintainer like any other.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
