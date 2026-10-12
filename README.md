@@ -2,34 +2,49 @@
 
 <h1 align="center">Window Swipe</h1>
 
-<p align="center">Three- and four-finger touchpad swipes that slide between your windows in the Cinnamon desktop.</p>
+<p align="center">
+  <b>Slide between your windows with three- and four-finger touchpad swipes in the Cinnamon desktop.</b><br>
+  Created by Mohamed Ghareeb (<a href="https://github.com/m7ghareeb">@m7ghareeb</a>)
+</p>
+
+<p align="center">
+  <a href="https://github.com/m7ghareeb/window-swipe/releases/latest"><img src="https://img.shields.io/github/v/release/m7ghareeb/window-swipe?label=release" alt="Latest release"></a>
+  <a href="https://github.com/m7ghareeb/window-swipe/actions/workflows/validate.yml"><img src="https://github.com/m7ghareeb/window-swipe/actions/workflows/validate.yml/badge.svg" alt="Validate"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-GPL--3.0--or--later-blue" alt="License: GPL-3.0-or-later"></a>
+  <img src="https://img.shields.io/badge/Cinnamon-6.6-8fbc5c" alt="Cinnamon 6.6">
+</p>
 
 <p align="center"><img src="docs/images/demo.gif" width="720" alt="A window sliding out while the next one slides in, following a touchpad swipe"></p>
 
-Window Swipe brings a macOS-inspired way of moving between windows to Cinnamon. Swipe
-horizontally with three or four fingers and the current window slides away while the next one
-slides in, following your fingers. When you lift them, the window glides into place with the
-momentum of your swipe. Swipe quickly several times and each new swipe continues smoothly from
-where the last one is.
+Window Swipe brings a macOS-inspired way of moving between windows to Linux Mint and the
+Cinnamon desktop. Swipe sideways with three or four fingers: the current window slides away
+and the next one slides in, **following your fingers**. When you lift them, the window glides
+into place with the momentum of your swipe. Swipe several times quickly and each swipe picks up
+smoothly from where the last one is.
+
+**Contents:** [Features](#features) · [Requirements](#requirements) ·
+[Installation](#installation) · [Gesture setup](#gesture-setup) · [Settings](#settings) ·
+[Window order and Plank](#window-order-and-plank) · [Known limitations](#known-limitations) ·
+[Troubleshooting](#troubleshooting) · [Getting help](#getting-help) ·
+[Contributing](#contributing) · [License](#license-and-credits)
 
 ## Features
 
-- **Follows your fingers.** The windows move with the swipe, so you can look at the next window
-  and change your mind before letting go.
-- **Smooth, macOS-inspired animation.** The glide starts at your fingers' speed and slows down to
-  rest exactly on the window, with no jump at release and no overshoot.
-- **Three- and four-finger swipes.** Use either, or limit Window Swipe to one of them.
-- **Rapid swipes.** A new swipe takes over the moving windows instead of waiting or jumping.
-- **Four animation profiles:** Responsive, Relaxed, **Calm** (default) and Gentle.
-- **Five switching-sensitivity presets:** **Balanced** (default), Sensitive, Less sensitive,
-  Flick-friendly and Deliberate.
-- **Plank-aware order.** Windows follow the order of their apps in the Plank dock, falling back
-  to the order they were opened when Plank isn't running.
-- **Minimized, maximized and fullscreen windows**, and the desktop, are all part of the slide.
-- **Native settings window.** Configure everything from Cinnamon's System Settings; changes apply
-  from the next swipe, with no restart needed.
-- **Leaves everything else alone.** Real windows never move during a slide, other gestures keep
-  their actions, and disabling the extension restores Cinnamon's normal behaviour.
+- **Follows your fingers.** Peek at the next window and change your mind before you let go.
+- **Smooth, macOS-inspired animation.** The glide starts at your fingers' speed and comes to rest
+  exactly on the window, with no jump and no overshoot.
+- **Three- and four-finger swipes**, left and right. Use both, or only one of them.
+- **Rapid swipes.** A new swipe takes over the moving windows instead of waiting for them.
+- **Four animation profiles** and **five switching-sensitivity presets**, with the recommended
+  **Calm** and **Balanced** as defaults.
+- **Plank-aware order.** Windows follow their apps' order in the Plank dock, or the order they
+  were opened in.
+- **Every kind of window:** minimized, maximized and fullscreen windows, and the desktop, all
+  take part in the slide.
+- **Native settings window** in System Settings. Changes apply from the next swipe, with no
+  restart.
+- **Leaves everything else alone.** Your real windows never move during a slide, other gestures
+  keep their actions, and disabling Window Swipe restores Cinnamon's normal behaviour.
 
 <p align="center"><img src="docs/images/slide.png" width="720" alt="Two windows halfway through a slide"></p>
 
@@ -37,174 +52,162 @@ where the last one is.
 
 | | |
 |---|---|
-| Desktop | Cinnamon 6.6 (X11) |
-| Gestures | [Touchégg](https://github.com/JoseExposito/touchegg) installed and running (Linux Mint includes it) |
-| Touchpad | Any touchpad with multi-finger gesture support |
-| Optional | [Plank](https://launchpad.net/plank) for dock-ordered navigation |
+| **Desktop** | Cinnamon 6.6 on X11 (Linux Mint 22.3 uses it) |
+| **Gestures** | [Touchégg](https://github.com/JoseExposito/touchegg), which Linux Mint installs and runs for you |
+| **Touchpad** | A touchpad that supports three- and four-finger gestures |
+| **Optional** | [Plank](https://launchpad.net/plank), for windows in dock order |
 
-**Gesture settings.** In **System Settings → Gestures**, gestures must be enabled, and **swipe
-left** and **swipe right** with **three** and **four** fingers must each have an action assigned.
-Any action will do. Cinnamon only passes a gesture on when an action is set for it; while Window
-Swipe is enabled it handles these swipes itself, so the assigned action doesn't run.
-
-**Tested on** Linux Mint 22.3 with Cinnamon 6.6.9 (X11), Touchégg 2.0.16, and a single
-1920×1080 monitor. Other Cinnamon versions, Wayland and multi-monitor setups have not been
-tested yet; reports are welcome.
+**Tested on** Linux Mint 22.3 with Cinnamon 6.6.9 (X11), Touchégg 2.0.16 and a single
+1920×1080 monitor. Other Cinnamon versions, Wayland and multiple monitors have not been tested
+yet. If you try them, please [share how it went](https://github.com/m7ghareeb/window-swipe/discussions).
 
 ## Installation
 
-### From Cinnamon Spices
+### From Cinnamon Spices *(coming soon)*
 
-Window Swipe is not yet available in the Cinnamon Spices catalogue; it is being prepared for
-submission. Once it is accepted, you'll be able to install it from **System Settings →
-Extensions → Download**, by searching for **Window Swipe**.
+Window Swipe is **not yet available** in the Cinnamon Spices catalogue. Once it is, you'll be
+able to install it from **System Settings → Extensions → Download** and get updates there
+automatically. Until then, install it from GitHub.
 
 ### From GitHub
 
-1. Download `window-swipe@ghareeb-v1.0.0.zip` from the
-   [latest release](https://github.com/m7ghareeb/window-swipe/releases/latest).
-2. Extract it into `~/.local/share/cinnamon/extensions/`, so that the folder
-   `~/.local/share/cinnamon/extensions/window-swipe@ghareeb/` contains `extension.js`:
+Open a terminal and run:
 
-   ```sh
-   unzip window-swipe@ghareeb-v1.0.0.zip -d ~/.local/share/cinnamon/extensions/
-   ```
+```sh
+cd ~/Downloads
+wget https://github.com/m7ghareeb/window-swipe/releases/download/v1.0.0/window-swipe@ghareeb-v1.0.0.zip \
+     https://github.com/m7ghareeb/window-swipe/releases/download/v1.0.0/SHA256SUMS
+sha256sum -c SHA256SUMS      # should print: window-swipe@ghareeb-v1.0.0.zip: OK
+mkdir -p ~/.local/share/cinnamon/extensions
+unzip -o window-swipe@ghareeb-v1.0.0.zip -d ~/.local/share/cinnamon/extensions/
+```
 
-3. Open **System Settings → Extensions**, select **Window Swipe** and enable it.
-
-To check the download, compare it with `SHA256SUMS` from the same release:
-`sha256sum -c SHA256SUMS`.
+Then open **System Settings → Extensions**, select **Window Swipe** and click the **+**
+button (*Enable*) at the bottom. A check mark appears next to it when it's enabled.
 
 <p align="center"><img src="docs/images/extensions-list.png" width="620" alt="Window Swipe in the Extensions list, with its settings button"></p>
 
-## Configuration
+Prefer not to use a terminal? Download the zip from the
+[releases page](https://github.com/m7ghareeb/window-swipe/releases/latest), extract it, and move
+the `window-swipe@ghareeb` folder into `~/.local/share/cinnamon/extensions/` (in the file
+manager, press **Ctrl+H** to show hidden folders).
 
-Click the gear next to Window Swipe in **System Settings → Extensions**. Changes apply from the
-next swipe; a swipe in progress is never interrupted. To start over, use **⋮ → Reset to
-defaults** in the settings window.
+The [installation guide](docs/installation.md) also covers updating and uninstalling.
+
+## Gesture setup
+
+Window Swipe receives swipes through Cinnamon's own gesture support. Check these once:
+
+1. Open **System Settings → Gestures**. On the **Settings** tab, make sure **Enable gestures**
+   is on.
+2. On the **Swipe** tab, under **Swipe with 3 fingers** and **Swipe with 4 fingers**, check that
+   **Left** and **Right** each have an action, not *Disabled*. Cinnamon's defaults already
+   assign actions to them, so usually there is nothing to change.
+
+**Any action works.** Cinnamon only passes on swipes that have an action. While Window Swipe is
+enabled it handles these swipes itself, so the action doesn't run; it's used again if you turn
+Window Swipe off or limit it to three or four fingers only.
+
+Now swipe **left** with three or four fingers for the next window and **right** for the
+previous one.
+
+## Settings
+
+Click the **gear** next to Window Swipe in **System Settings → Extensions**. Changes apply from
+the next swipe. **More options (…) → Reset to defaults**, at the top right, brings back the
+recommended settings.
 
 <p align="center"><img src="docs/images/settings.png" width="560" alt="The Window Swipe settings window"></p>
 
-### Animation
-
-How the window glides into place after you lift your fingers. Every profile uses the same smooth
-curve and continues at your fingers' speed; they differ only in timing, about 15 % apart.
+**Animation**: how the window glides into place after you lift your fingers.
 
 | Profile | Feel |
 |---|---|
 | Responsive | Quickest glide |
 | Relaxed | A little calmer |
-| **Calm** (default) | Smooth and unhurried |
+| **Calm** (default, recommended) | Smooth and unhurried |
 | Gentle | Slowest, softest landing |
 
-Neighbouring profiles are deliberately subtle. Responsive and Gentle are clearly different.
-
-### Touchpad sensitivity
-
-What happens when you lift your fingers: switch to the next window or go back.
+**Switching sensitivity**: whether lifting your fingers switches to the next window or goes back.
 
 | Preset | Behaviour |
 |---|---|
-| **Balanced** (default) | Past halfway switches. A quick flick switches earlier. A short, slow swipe goes back. |
-| Sensitive | Slow swipes switch from 40 %, and flicks switch more easily. |
-| Less sensitive | Slow swipes need 60 %, and flicks must be faster. |
+| **Balanced** (default, recommended) | Past halfway switches; a quick flick switches earlier; a short, slow swipe goes back. |
+| Sensitive | Switches more easily: from 40 % for slow swipes, and with gentler flicks. |
+| Less sensitive | Needs more: 60 % for slow swipes, and faster flicks. |
 | Flick-friendly | Short, quick flicks switch; slow partial swipes still go back. |
 | Deliberate | Mostly how far you swiped decides; only very fast flicks switch early. |
 
-These presets change only the decision at release. How far your fingers must travel and how
-fast the window follows them are set by Touchégg and your touchpad driver, and are not changed.
-Clear-cut swipes behave the same with every preset; only borderline swipes differ.
+**Navigation**: the window order (below) and which finger counts Window Swipe uses: three and
+four (default), three only, or four only.
 
-### Navigation
+The [configuration guide](docs/configuration.md) explains every setting in more detail.
 
-- **Window order:** *Plank dock order* (default) or *window opening order*. With Plank order,
-  windows follow their apps' positions in the dock, and apps that aren't pinned come after the
-  pinned ones. If Plank isn't running, opening order is used.
-- **Fingers:** *three and four* (default), *three only* or *four only*. Swipes with the other
-  finger count run the action assigned to them in System Settings → Gestures.
+## Window order and Plank
 
-Swipe **left** for the next window and **right** for the previous one. From the desktop, swipe
-left for the first window and right for the last. At either end of the list the window gives a
-little and springs back.
-
-## Updates
-
-Cinnamon looks for extension updates in the Cinnamon Spices catalogue. When Window Swipe is
-available there and installed from it, new versions will appear in **System Settings →
-Extensions** once they have been reviewed and accepted into Cinnamon Spices. Copies installed
-manually from GitHub are not updated automatically; download the new release, or reinstall from
-Cinnamon Spices once available. New versions are listed on the
-[releases page](https://github.com/m7ghareeb/window-swipe/releases).
-
-## Troubleshooting and FAQ
-
-**Nothing happens when I swipe.**
-Check that gestures are enabled in **System Settings → Gestures** and that swipe left and swipe
-right with three and four fingers each have an action assigned. Then check that Touchégg is
-running: `systemctl status touchegg`.
-
-**Swipes run my old action (for example Alt+Tab) instead of sliding.**
-Make sure Window Swipe is enabled, and check the *Fingers* setting: swipes with a finger count
-that Window Swipe doesn't handle keep their assigned action.
-
-**Can I swipe toward one window, change my mind, and continue to the window on the other side
-without lifting my fingers?**
-You can move toward a window and back, but not past the starting window to the other side within
-the same swipe. Lift your fingers and swipe again; the new swipe continues smoothly from where the
-windows are. See [Known limitations](#known-limitations).
-
-**The order of my windows looks wrong.**
-With Plank order, windows follow the apps pinned in your first Plank dock. Reorder the dock and
-the next swipe uses the new order. Choose *Window opening order* if you prefer that.
-
-**Some windows are skipped.**
-Only windows on the current workspace and on the same monitor are included. Windows that bypass
-the compositor, such as some games in exclusive fullscreen, can't be shown in the slide and are
-skipped.
-
-**Nothing happens on the lock screen.** Cinnamon ignores touchpad gestures while the screen is locked.
-
-**Where can I see errors?** Open Looking Glass (`Alt+F2`, then `lg`) or look in
-`~/.xsession-errors` for lines containing `window-swipe`.
+- With **Plank dock order** (the default), windows follow the order of their apps in your Plank
+  dock. Apps that aren't pinned come after the pinned ones, in the order they were opened.
+  Reorder the dock and the next swipe uses the new order.
+- If Plank isn't running, or you choose **Window opening order**, windows simply follow the order
+  they were opened in.
+- The slide includes the normal windows of the **current workspace** on the **current monitor**.
+  Swipe from the desktop to reach the first (left swipe) or last (right swipe) window. At
+  either end of the list the window gives a little and springs back.
 
 ## Known limitations
 
-- **One direction per swipe.** Touchégg fixes a swipe's direction when it starts and reports no
-  movement once the fingers return past the starting point, so a single swipe can't continue past
-  the starting window to the window on the other side. Lift your fingers and swipe again.
-- Only the current workspace and the monitor of the starting window are included; multi-monitor
-  setups have not been tested.
-- Windows that bypass the compositor are skipped.
+- **One direction per swipe.** You can swipe toward a window and back, but not past the
+  starting window to the other side within one swipe: Touchégg fixes a swipe's direction when
+  it starts. Lift your fingers and swipe again; the new swipe continues smoothly.
+- Only the current workspace and monitor are included. Multiple monitors haven't been tested.
+- Windows that bypass the compositor, such as some games in exclusive fullscreen, are skipped.
 - Tested on Cinnamon 6.6 (X11) only.
+
+## Troubleshooting
+
+| Problem | What to check |
+|---|---|
+| Nothing happens when I swipe | [Gesture setup](#gesture-setup): gestures enabled, and an action on Left and Right for 3 and 4 fingers. Is Window Swipe enabled? Is Touchégg running (`systemctl status touchegg`)? |
+| My old action runs instead of a slide | Window Swipe is off, or the **Fingers** setting excludes that finger count. |
+| A swipe does nothing while a menu is open | Intentional: swipes are ignored while a menu, Scale or Expo is open. |
+| The window order looks wrong | See [Window order and Plank](#window-order-and-plank), or choose *Window opening order*. |
+
+More answers and how to collect logs are in the [troubleshooting guide](docs/troubleshooting.md).
+
+## Updates
+
+Window Swipe isn't on Cinnamon Spices yet, so copies installed from GitHub aren't updated
+automatically. **Watch → Custom → Releases** on this repository to be notified of new versions,
+then follow [Updating](docs/installation.md#updating). Once Window Swipe is on Cinnamon Spices,
+installing it from there will give you updates in **System Settings → Extensions**.
 
 ## Privacy
 
 Window Swipe makes no network connections, runs no other programs and writes no files. Its only
-stored data is its settings, kept by Cinnamon in
-`~/.config/cinnamon/spices/window-swipe@ghareeb/`.
+data is its settings, which Cinnamon keeps in `~/.config/cinnamon/spices/window-swipe@ghareeb/`.
 
-## Reporting bugs and requesting features
+## Getting help
 
-Please use [GitHub Issues](https://github.com/m7ghareeb/window-swipe/issues) and choose
-*Bug report* or *Feature request*. For bugs, include your Linux distribution, Cinnamon version
-(`cinnamon --version`), Touchégg version (`touchegg --version`) and the steps to reproduce. For
-security issues, see [SECURITY.md](SECURITY.md).
+- **Questions, ideas and sharing your setup:** [GitHub Discussions](https://github.com/m7ghareeb/window-swipe/discussions)
+  ([Q&A](https://github.com/m7ghareeb/window-swipe/discussions/categories/q-a),
+  [Ideas](https://github.com/m7ghareeb/window-swipe/discussions/categories/ideas)).
+- **Bugs and concrete feature requests:** [GitHub Issues](https://github.com/m7ghareeb/window-swipe/issues/new/choose).
+- **Security problems:** report them privately, as described in [SECURITY.md](SECURITY.md).
 
 ## Contributing
 
-Contributions are welcome: bug fixes, improvements, new animation profiles, documentation and
-translations. Please read [CONTRIBUTING.md](CONTRIBUTING.md) and our
-[Code of Conduct](CODE_OF_CONDUCT.md). In short: fork the repository, make your change on a
-branch, test it, and open a pull request against `main`.
+Contributions are welcome: bug reports, fixes, documentation, new animation profiles and
+translations. Fork the repository, make your change on a branch, test it on a real touchpad,
+and open a pull request against `main`. Every pull request is reviewed by the maintainer, who
+decides what is merged. See [CONTRIBUTING.md](CONTRIBUTING.md), the
+[developer guide](docs/development.md) and the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-## License
+## License and credits
 
 Window Swipe is free software, released under the
-[GNU General Public License v3.0 or later](LICENSE).
+[GNU General Public License v3.0 or later](LICENSE). See the [changelog](CHANGELOG.md) and
+[releases](https://github.com/m7ghareeb/window-swipe/releases) for version history.
 
-## Credits
-
-**Created by Mohamed Ghareeb**
-GitHub: [@m7ghareeb](https://github.com/m7ghareeb)
+**Created by Mohamed Ghareeb** · GitHub [@m7ghareeb](https://github.com/m7ghareeb)
 
 Window Swipe builds on the Cinnamon desktop, the Muffin window manager and Touchégg.

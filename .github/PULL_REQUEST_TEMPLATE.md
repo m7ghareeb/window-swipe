@@ -26,7 +26,7 @@
 
 - [ ] The change is focused on one thing.
 - [ ] Defaults (Calm, Balanced) and existing profiles are unchanged, or the change was discussed in an issue first.
-- [ ] Documentation (README, CHANGELOG under "Unreleased") is updated if needed.
+- [ ] Documentation and CHANGELOG.md (under `## [Unreleased]`) are updated if needed.
 - [ ] I agree that my contribution is licensed under GPL-3.0-or-later.
 
 <!-- Pull requests are proposals: the maintainer reviews them and decides whether to merge. Thank you! -->

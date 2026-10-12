@@ -25,7 +25,7 @@ you lift them, and rapid swipes continue smoothly from wherever the previous one
 
 Click the gear next to Window Swipe in **System Settings → Extensions**. Choose the animation
 profile, the switching sensitivity, the window order (Plank dock or opening order) and the
-fingers to use. **⋮ → Reset to defaults** restores Calm and Balanced.
+fingers to use. **More options (…) → Reset to defaults** restores Calm and Balanced.
 
 The sensitivity presets only decide what a swipe does when you lift your fingers. They don't
 change how far your fingers travel; Touchégg and the touchpad driver set that.
